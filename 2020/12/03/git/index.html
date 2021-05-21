@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Sharing" />
+  <meta name="keywords" content="Git," />
 
 
 
@@ -79,13 +79,30 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="学习，工作，生活">
-<meta property="og:url" content="http://example.com/index.html">
+<meta name="description" content="Git该博客记录Learning Git Branching的一些题解。（一些比较简单的就没有记录了） Git配置 在目录下~&#x2F;.gitconfig配置user&#x2F;email  将git的默认编辑器改为vim 1&gt; git config --global core.editor vim  本地篇相对引用 利用**git branch -f &lt;分支名&gt; &lt;commit hash">
+<meta property="og:type" content="article">
+<meta property="og:title" content="git">
+<meta property="og:url" content="http://example.com/2020/12/03/git/index.html">
 <meta property="og:site_name" content="学习，工作，生活">
+<meta property="og:description" content="Git该博客记录Learning Git Branching的一些题解。（一些比较简单的就没有记录了） Git配置 在目录下~&#x2F;.gitconfig配置user&#x2F;email  将git的默认编辑器改为vim 1&gt; git config --global core.editor vim  本地篇相对引用 利用**git branch -f &lt;分支名&gt; &lt;commit hash">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/git_1.PNG">
+<meta property="og:image" content="http://example.com/images/git_2.png">
+<meta property="og:image" content="http://example.com/images/git_3.png">
+<meta property="og:image" content="http://example.com/images/git_4.png">
+<meta property="og:image" content="http://example.com/images/git_5.png">
+<meta property="og:image" content="http://example.com/images/git_6.png">
+<meta property="og:image" content="http://example.com/images/git_7.png">
+<meta property="og:image" content="http://example.com/images/git_8.png">
+<meta property="og:image" content="http://example.com/images/git_9.png">
+<meta property="og:image" content="http://example.com/images/git_10.png">
+<meta property="og:image" content="http://example.com/images/git_11.png">
+<meta property="article:published_time" content="2020-12-03T04:57:20.000Z">
+<meta property="article:modified_time" content="2021-05-21T07:10:05.991Z">
 <meta property="article:author" content="Bravolu">
+<meta property="article:tag" content="Git">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/git_1.PNG">
 
 
 
@@ -115,13 +132,13 @@
 
 
 
-  <link rel="canonical" href="http://example.com/"/>
+  <link rel="canonical" href="http://example.com/2020/12/03/git/"/>
 
 
 
 
 
-  <title>学习，工作，生活</title>
+  <title>git | 学习，工作，生活</title>
   
 
 
@@ -140,8 +157,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -214,364 +230,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/02/23/git-submodule/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="学习，工作，生活">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2021/02/23/git-submodule/" itemprop="url">git_submodule</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-02-23T11:19:59+08:00">
-                2021-02-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="Git-Submodule"><a href="#Git-Submodule" class="headerlink" title="Git Submodule"></a>Git Submodule</h1><ul>
-<li><strong>使用场景</strong></li>
-</ul>
-<p>在开发过程中，有些模块是公用的（例如一些公共库）。不应该在项目中单独维护这些公共库（冗余，且如果公共库更新则要手动更新），所以用到submodule。</p>
-<ul>
-<li><strong>使用方法</strong> </li>
-</ul>
-<ol>
-<li>添加submodule模块。</li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> git submodule add &lt;github-url&gt; &lt;path&gt;</span> </span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>从github clone一个带有submodule的repo时，需要用一下命令来抓取对应的submodule.</li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> git submodule init</span> </span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> git submodule update</span> </span><br><span class="line">or</span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> git submodule update --init --recursive<span class="comment"># 与上面两个命令等价</span></span></span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>submodule仓库更新后，要使用以下指令才能强制更新，不然一直抓取的是老版本。</li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> git submodule update --init --force --remote</span></span><br></pre></td></tr></table></figure>
-
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/15/gdb/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="学习，工作，生活">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/12/15/gdb/" itemprop="url">gdb</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-12-15T10:48:08+08:00">
-                2020-12-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/gdb%E8%B0%83%E8%AF%95/" itemprop="url" rel="index">
-                    <span itemprop="name">gdb调试</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="C-gdb调试"><a href="#C-gdb调试" class="headerlink" title="C++ gdb调试"></a>C++ gdb调试</h1><h2 id="命令参数"><a href="#命令参数" class="headerlink" title="命令参数"></a>命令参数</h2><table>
-<thead>
-<tr>
-<th>命令</th>
-<th>简写</th>
-<th>解释</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>file</td>
-<td>-</td>
-<td>装入想要调试的可执行文件</td>
-</tr>
-<tr>
-<td>list</td>
-<td>l</td>
-<td>列出产生执行文件源代码的一部分</td>
-</tr>
-<tr>
-<td>next</td>
-<td>n</td>
-<td>执行一行源代码但不进入函数内部</td>
-</tr>
-<tr>
-<td>step</td>
-<td>s</td>
-<td>执行一行源代码而且进入函数内部</td>
-</tr>
-<tr>
-<td>run</td>
-<td>r</td>
-<td>执行当前被调试的程序</td>
-</tr>
-<tr>
-<td>quit</td>
-<td>q</td>
-<td>终止GDB</td>
-</tr>
-<tr>
-<td>print</td>
-<td>p</td>
-<td>打印变量</td>
-</tr>
-<tr>
-<td>break</td>
-<td>b</td>
-<td>在代码里设置断点</td>
-</tr>
-<tr>
-<td>info break</td>
-<td>i b</td>
-<td>查看断点信息（位置）</td>
-</tr>
-<tr>
-<td>delete</td>
-<td>d</td>
-<td>删除设置的断点</td>
-</tr>
-<tr>
-<td>watch</td>
-<td>wa</td>
-<td>监视一个变量的值，一旦值有变化，程序停住</td>
-</tr>
-<tr>
-<td>help</td>
-<td>h</td>
-<td>帮助指令</td>
-</tr>
-</tbody></table>
-<h2 id="基础用法"><a href="#基础用法" class="headerlink" title="基础用法"></a>基础用法</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 1. 进入gdb调试</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> g++ -g -o xxx xxx.cpp <span class="comment"># 要有-g 选项才能有debug信息</span></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> gdb xxx</span></span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 2. list 查看源码</span></span><br><span class="line">(gdb) list </span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 在<span class="comment">#16行设置断点</span></span> </span><br><span class="line">(gdb) break 16</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看断点信息</span> </span><br><span class="line">(gdb) info break </span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 执行程序，在断点停住</span></span><br><span class="line">(gdb) run </span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 在断点处单步执行,不进入函数</span> </span><br><span class="line">(gdb) next </span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 在断点处单步执行，进入函数</span></span><br><span class="line">(gdb) step</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 删除断点</span></span><br><span class="line">(gdb) delete 16</span><br></pre></td></tr></table></figure>
-
-
-
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
 
   
 
@@ -601,9 +262,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/12/03/git/" itemprop="url">git</a></h1>
+          <h1 class="post-title" itemprop="name headline">git</h1>
         
 
         <div class="post-meta">
@@ -653,9 +312,7 @@
       
 
       
-        
-          
-            <h1 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h1><p>该博客记录<a target="_blank" rel="noopener" href="https://learngitbranching.js.org/?locale=zh_CN">Learning Git Branching</a>的一些题解。（一些比较简单的就没有记录了）</p>
+        <h1 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h1><p>该博客记录<a target="_blank" rel="noopener" href="https://learngitbranching.js.org/?locale=zh_CN">Learning Git Branching</a>的一些题解。（一些比较简单的就没有记录了）</p>
 <h2 id="Git配置"><a href="#Git配置" class="headerlink" title="Git配置"></a>Git配置</h2><ul>
 <li><p>在目录下~/.gitconfig配置user/email</p>
 </li>
@@ -767,8 +424,6 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> git pull origin bar:foo</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> git pull origin master:side</span></span><br></pre></td></tr></table></figure>
 
 
-          
-        
       
     </div>
     
@@ -783,144 +438,40 @@
 
     <footer class="post-footer">
       
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/01/docker/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="学习，工作，生活">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/12/01/docker/" itemprop="url">docker</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-12-01T16:49:59+08:00">
-                2020-12-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
+        <div class="post-tags">
           
-
+            <a href="/tags/Git/" rel="tag"># Git</a>
           
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h1><p>该文档用于记录使用Docker来部署一个基于Flask的Web应用。</p>
-<h2 id="Docker使用方法"><a href="#Docker使用方法" class="headerlink" title="Docker使用方法"></a>Docker使用方法</h2><h3 id="在有Dockerfile的情况下部署"><a href="#在有Dockerfile的情况下部署" class="headerlink" title="在有Dockerfile的情况下部署"></a>在有Dockerfile的情况下部署</h3><ol>
-<li><p>用Dockerfile构建镜像</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> docker build -t 镜像名 . <span class="comment"># 在Dockerfile目录下，不需要-f</span></span> </span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> docker images            <span class="comment"># 查看构建的images</span></span></span><br></pre></td></tr></table></figure></li>
-<li><p>运行镜像，形成容器</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> docker run -itd IMAGE /bin/bash</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> -it 以交互式进入终端</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> -d  后台运行</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> docker ps <span class="comment"># 查看目前容器的运行状态</span></span></span><br></pre></td></tr></table></figure></li>
-<li><p>进入容器</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> docker attach CONTAINER</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> or</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> docker <span class="built_in">exec</span> -itd CONTAINER /bin/bash</span></span><br></pre></td></tr></table></figure></li>
-</ol>
-<h3 id="构建Dockerfile"><a href="#构建Dockerfile" class="headerlink" title="构建Dockerfile"></a>构建Dockerfile</h3><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 基础镜像</span></span><br><span class="line"><span class="keyword">FROM</span> pytorch/pytorch</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建者信息</span></span><br><span class="line"><span class="keyword">LABEL</span><span class="bash"> maintainer=<span class="string">&quot;Bravolu&lt;lushh7@mail2.sysu.edu.cn&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 升级 apt-get 并安装python</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> apt-get update &amp;&amp; apt-get install -y \ </span></span><br><span class="line">    python3 \</span><br><span class="line">    python3-pip</span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> python3 -m pip --no-cache-dir install --upgrade \ </span></span><br><span class="line">    pip \</span><br><span class="line">    setuptools</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将当前目录的文件加入cartoonizer</span></span><br><span class="line"><span class="keyword">ADD</span><span class="bash"> . /cartoonizer/</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 将/cartoonizer作为工作目录 </span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> /cartoonizer</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> pip -V</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> pip install scikit-build </span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> pip install -r dev-requirements.txt </span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 暴露端口</span></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">5000</span></span><br></pre></td></tr></table></figure>
-
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
       
 
       
       
-        <div class="post-eof"></div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/12/01/docker/" rel="next" title="docker">
+                <i class="fa fa-chevron-left"></i> docker
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/12/15/gdb/" rel="prev" title="gdb">
+                gdb <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
       
     </footer>
   </div>
@@ -930,10 +481,11 @@
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -941,6 +493,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -961,8 +517,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -1038,6 +603,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Git"><span class="nav-number">1.</span> <span class="nav-text">Git</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Git%E9%85%8D%E7%BD%AE"><span class="nav-number">1.1.</span> <span class="nav-text">Git配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E7%AF%87"><span class="nav-number">1.2.</span> <span class="nav-text">本地篇</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%B8%E5%AF%B9%E5%BC%95%E7%94%A8"><span class="nav-number">1.2.1.</span> <span class="nav-text">相对引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%92%A4%E9%94%80%E6%9B%B4%E6%94%B9"><span class="nav-number">1.2.2.</span> <span class="nav-text">撤销更改</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cherry-pick"><span class="nav-number">1.2.3.</span> <span class="nav-text">cherry-pick</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9C%E7%A8%8B%E7%AF%87"><span class="nav-number">1.3.</span> <span class="nav-text">远程篇</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Git%E4%B8%8E%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5"><span class="nav-number">1.3.1.</span> <span class="nav-text">Git与远程仓库建立连接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pull-Request"><span class="nav-number">1.3.2.</span> <span class="nav-text">Pull Request</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%88%E5%B9%B6%E5%A4%9A%E4%B8%AA%E5%88%86%E6%94%AF"><span class="nav-number">1.3.3.</span> <span class="nav-text">合并多个分支</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9C%E7%A8%8B%E8%BF%BD%E8%B8%AA"><span class="nav-number">1.3.4.</span> <span class="nav-text">远程追踪</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Git-Push%E7%9A%84%E5%8F%82%E6%95%B0"><span class="nav-number">1.3.5.</span> <span class="nav-text">Git Push的参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Git-Fetch%E7%9A%84%E5%8F%82%E6%95%B0"><span class="nav-number">1.3.6.</span> <span class="nav-text">Git Fetch的参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Git-pull"><span class="nav-number">1.3.7.</span> <span class="nav-text">Git pull</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -1178,6 +759,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
