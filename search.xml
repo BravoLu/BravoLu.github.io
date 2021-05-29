@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>docker</title>
+    <url>/2020/12/01/docker/</url>
+    <content><![CDATA[<p>记录如何使用Docker来部署一个基于Flask的Web应用。</p>
+<span id="more"></span>
+
+<h1 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h1><h2 id="Docker使用方法"><a href="#Docker使用方法" class="headerlink" title="Docker使用方法"></a>Docker使用方法</h2><h3 id="在有Dockerfile的情况下部署"><a href="#在有Dockerfile的情况下部署" class="headerlink" title="在有Dockerfile的情况下部署"></a>在有Dockerfile的情况下部署</h3><ol>
+<li><p>用Dockerfile构建镜像</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> docker build -t 镜像名 . <span class="comment"># 在Dockerfile目录下，不需要-f</span></span> </span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> docker images            <span class="comment"># 查看构建的images</span></span></span><br></pre></td></tr></table></figure></li>
+<li><p>运行镜像，形成容器</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> docker run -itd IMAGE /bin/bash</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> -it 以交互式进入终端</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> -d  后台运行</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> docker ps <span class="comment"># 查看目前容器的运行状态</span></span></span><br></pre></td></tr></table></figure></li>
+<li><p>进入容器</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> docker attach CONTAINER</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> or</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> docker <span class="built_in">exec</span> -itd CONTAINER /bin/bash</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="构建Dockerfile"><a href="#构建Dockerfile" class="headerlink" title="构建Dockerfile"></a>构建Dockerfile</h3><figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 基础镜像</span></span><br><span class="line"><span class="keyword">FROM</span> pytorch/pytorch</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建者信息</span></span><br><span class="line"><span class="keyword">LABEL</span><span class="bash"> maintainer=<span class="string">&quot;Bravolu&lt;lushh7@mail2.sysu.edu.cn&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 升级 apt-get 并安装python</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> apt-get update &amp;&amp; apt-get install -y \ </span></span><br><span class="line">    python3 \</span><br><span class="line">    python3-pip</span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> python3 -m pip --no-cache-dir install --upgrade \ </span></span><br><span class="line">    pip \</span><br><span class="line">    setuptools</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将当前目录的文件加入cartoonizer</span></span><br><span class="line"><span class="keyword">ADD</span><span class="bash"> . /cartoonizer/</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 将/cartoonizer作为工作目录 </span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> /cartoonizer</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> pip -V</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> pip install scikit-build </span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> pip install -r dev-requirements.txt </span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 暴露端口</span></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">5000</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>Docker</category>
+      </categories>
+      <tags>
+        <tag>Docker</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>gdb</title>
+    <url>/2020/12/15/gdb/</url>
+    <content><![CDATA[<p>日常使用的gdb命令。</p>
+<span id="more"></span>
+
+<h1 id="C-gdb调试"><a href="#C-gdb调试" class="headerlink" title="C++ gdb调试"></a>C++ gdb调试</h1><h2 id="命令参数"><a href="#命令参数" class="headerlink" title="命令参数"></a>命令参数</h2><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>简写</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>file</td>
+<td>-</td>
+<td>装入想要调试的可执行文件</td>
+</tr>
+<tr>
+<td>list</td>
+<td>l</td>
+<td>列出产生执行文件源代码的一部分</td>
+</tr>
+<tr>
+<td>next</td>
+<td>n</td>
+<td>执行一行源代码但不进入函数内部</td>
+</tr>
+<tr>
+<td>step</td>
+<td>s</td>
+<td>执行一行源代码而且进入函数内部</td>
+</tr>
+<tr>
+<td>run</td>
+<td>r</td>
+<td>执行当前被调试的程序</td>
+</tr>
+<tr>
+<td>quit</td>
+<td>q</td>
+<td>终止GDB</td>
+</tr>
+<tr>
+<td>print</td>
+<td>p</td>
+<td>打印变量</td>
+</tr>
+<tr>
+<td>break</td>
+<td>b</td>
+<td>在代码里设置断点</td>
+</tr>
+<tr>
+<td>info break</td>
+<td>i b</td>
+<td>查看断点信息（位置）</td>
+</tr>
+<tr>
+<td>delete</td>
+<td>d</td>
+<td>删除设置的断点</td>
+</tr>
+<tr>
+<td>watch</td>
+<td>wa</td>
+<td>监视一个变量的值，一旦值有变化，程序停住</td>
+</tr>
+<tr>
+<td>help</td>
+<td>h</td>
+<td>帮助指令</td>
+</tr>
+</tbody></table>
+<h2 id="基础用法"><a href="#基础用法" class="headerlink" title="基础用法"></a>基础用法</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 1. 进入gdb调试</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> g++ -g -o xxx xxx.cpp <span class="comment"># 要有-g 选项才能有debug信息</span></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> gdb xxx</span></span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 2. list 查看源码</span></span><br><span class="line">(gdb) list </span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 在<span class="comment">#16行设置断点</span></span> </span><br><span class="line">(gdb) break 16</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看断点信息</span> </span><br><span class="line">(gdb) info break </span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 执行程序，在断点停住</span></span><br><span class="line">(gdb) run </span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 在断点处单步执行,不进入函数</span> </span><br><span class="line">(gdb) next </span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 在断点处单步执行，进入函数</span></span><br><span class="line">(gdb) step</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 删除断点</span></span><br><span class="line">(gdb) delete 16</span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
+      <categories>
+        <category>gdb调试</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>git submodule的使用方法</title>
+    <url>/2021/02/23/git-submodule/</url>
+    <content><![CDATA[<p>记录如何使用git的submodule指令的使用场景及用法。</p>
+<span id="more"></span>
+
+<h1 id="Git-Submodule"><a href="#Git-Submodule" class="headerlink" title="Git Submodule"></a>Git Submodule</h1><ul>
+<li><strong>使用场景</strong></li>
+</ul>
+<p>在开发过程中，有些模块是公用的（例如一些公共库）。不应该在项目中单独维护这些公共库（冗余，且如果公共库更新则要手动更新），所以用到submodule。</p>
+<ul>
+<li><strong>使用方法</strong> </li>
+</ul>
+<ol>
+<li>添加submodule模块。</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> git submodule add &lt;github-url&gt; &lt;path&gt;</span> </span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>从github clone一个带有submodule的repo时，需要用一下命令来抓取对应的submodule.</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> git submodule init</span> </span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> git submodule update</span> </span><br><span class="line">or</span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> git submodule update --init --recursive<span class="comment"># 与上面两个命令等价</span></span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>submodule仓库更新后，要使用以下指令才能强制更新，不然一直抓取的是老版本。</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> git submodule update --init --force --remote</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>git</category>
+      </categories>
+      <tags>
+        <tag>git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>git</title>
+    <url>/2020/12/03/git/</url>
+    <content><![CDATA[<p>记录<a href="https://learngitbranching.js.org/?locale=zh_CN">Learning Git Branching</a>的一些题解。（一些比较简单的就没有记录了）</p>
+<span id="more"></span>
+
+<h1 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h1><h2 id="Git配置"><a href="#Git配置" class="headerlink" title="Git配置"></a>Git配置</h2><ul>
+<li><p>在目录下~/.gitconfig配置user/email</p>
+</li>
+<li><p>将git的默认编辑器改为vim</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> git config --global core.editor vim</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="本地篇"><a href="#本地篇" class="headerlink" title="本地篇"></a>本地篇</h2><h3 id="相对引用"><a href="#相对引用" class="headerlink" title="相对引用"></a>相对引用</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git branch -f &lt;分支名&gt; &lt;commit hash code&gt; </span><br></pre></td></tr></table></figure>
+<p>强制将分支名指向具体的提交</p>
+<h3 id="撤销更改"><a href="#撤销更改" class="headerlink" title="撤销更改"></a>撤销更改</h3><ul>
+<li><strong>git reset</strong>和<strong>git revert</strong>的区别，<strong>git reset</strong>撤销不会作为一个提交，所以在合作的过程中合作者无法看到撤销的内容。</li>
+</ul>
+<h3 id="cherry-pick"><a href="#cherry-pick" class="headerlink" title="cherry-pick"></a>cherry-pick</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git cherry-pick &lt;commit1&gt; &lt;commit2&gt; ... &lt;commit3&gt;</span><br></pre></td></tr></table></figure>
+<p>将commit1,commit2,commit3添加到当前head后面。</p>
+<h2 id="远程篇"><a href="#远程篇" class="headerlink" title="远程篇"></a>远程篇</h2><h3 id="Git与远程仓库建立连接"><a href="#Git与远程仓库建立连接" class="headerlink" title="Git与远程仓库建立连接"></a>Git与远程仓库建立连接</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> git add remote origin git@github.com:xxx</span> </span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> git push -u origin master</span> </span><br></pre></td></tr></table></figure>
+
+<h3 id="Pull-Request"><a href="#Pull-Request" class="headerlink" title="Pull Request"></a>Pull Request</h3><ul>
+<li>场景：Pull Request为协作者request提交到原作者的分支时，需要先开一个分支，否则直接在master上commit，然后再Push会出现[<strong>远程服务器拒绝</strong>]。</li>
+</ul>
+<ul>
+<li>解决方法：</li>
+</ul>
+<ol>
+<li><p>在当前分支创建一个新的分支feature</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> git branch feature</span> </span><br></pre></td></tr></table></figure></li>
+<li><p>将master分支回退到o/master</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> git reset o/master(C1)</span></span><br></pre></td></tr></table></figure></li>
+<li><p>跳回到feature分支</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> git checkout feature</span></span><br></pre></td></tr></table></figure></li>
+<li><p>提交分支</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> git push</span> </span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="合并多个分支"><a href="#合并多个分支" class="headerlink" title="合并多个分支"></a>合并多个分支</h3><ul>
+<li>场景：多个人在当前的master分支中建立了多个分支，需要按顺序合并这些分支，并且push到远程分支中。</li>
+</ul>
+<p><img src="/images/git_2.png" alt="pic" style="zoom:80%;" /><img src="/images/git_3.png" alt="pic" style="zoom:75%;" /></p>
+<ul>
+<li>解决方法：</li>
+</ul>
+<ol>
+<li><p>回到master分支，并且pull</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> git checkout master</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> git pull</span></span><br></pre></td></tr></table></figure></li>
+<li><p>利用**git rebase [startpoint] [endpoint]**按顺序合并分支。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> git rebase C8 side1</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> git rebase side1 side2</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> git rebase side2 side3</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> git rebase side3 master</span></span><br></pre></td></tr></table></figure></li>
+<li><p>提交。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> git push</span></span><br></pre></td></tr></table></figure></li>
+<li><p>这个也可以用merge提交，不过会显得整个树比较复杂。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> git checkout master</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> git pull</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> git merge side1</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> git merge side2</span> </span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> git merge side3</span> </span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> git push</span> </span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="远程追踪"><a href="#远程追踪" class="headerlink" title="远程追踪"></a>远程追踪</h3><ul>
+<li><p>场景：默认下master是追踪origin/master的，但是我们也可以指定分支来追踪origin/master。你可以让任意分支追踪origin/master，然后该分支会像master分支一样得到隐含的push目的地以及merge目标。这意味着你可以在分支totallyNotMaster上执行git push，将工作推送到远程仓库的master分支上。有两种方法设置这个属性：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 1. 通过远程分支检出一个新的分支，创建一个totallyNotMaster的分支，它跟踪远程分支origin/master</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> git checkout -b totallyNotMaster origin/master</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 2. 设置远程追踪分支，如果当前在foo可以省略foo；</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> git branch -u origin/master foo</span> </span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><img src="/images/git_4.png" alt="pic" style="zoom: 80%;" /><img src="/images/git_5.png" alt="pic" style="zoom:80%;" /></p>
+<ul>
+<li>解决方法：</li>
+</ul>
+<ol>
+<li><p>创建一个Side分支，追踪master</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> git checkout -b side o/master</span></span><br></pre></td></tr></table></figure></li>
+<li><p>更新远程仓库到本地</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> git fetch</span> </span><br></pre></td></tr></table></figure></li>
+<li><p>提交一个新的C3</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> git commit</span> </span><br></pre></td></tr></table></figure></li>
+<li><p>将C3 rebase到C2</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> git rebase o/master</span></span><br></pre></td></tr></table></figure></li>
+<li><p>提交</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> git push</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="Git-Push的参数"><a href="#Git-Push的参数" class="headerlink" title="Git Push的参数"></a>Git Push的参数</h3><ul>
+<li><p>背景：<strong>git push &lt;remote&gt; &lt;place&gt;</strong> or <strong>git push &lt;remote&gt; &lt;source&gt;:&lt;destination&gt;</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> git push origin master <span class="comment">#切到本地仓库中的“master”分支，获取所有的提交，再到远程仓库“origin”中找到“master”分支，将远程仓库中没有的提交记录都添加上去，搞定之后告诉我。</span></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> git push origin master:newBranch <span class="comment"># newBranch不在会创建这个分支。</span></span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="Git-Fetch的参数"><a href="#Git-Fetch的参数" class="headerlink" title="Git Fetch的参数"></a>Git Fetch的参数</h3><ul>
+<li>背景：<strong>git fetch &lt;remote&gt; &lt;place&gt;</strong> or **git fetch &lt;remote&gt; &lt;远程仓库名&gt;:&lt;本地仓库名&gt;**，该指令会将更新提交到origin/xxx分支而不是本地xxx分支。</li>
+</ul>
+<p><img src="/images/git_6.png" alt="pic" style="zoom:80%;" /><img src="/images/git_7.png" alt="pic" style="zoom:75%;" /></p>
+<ul>
+<li>解决方法：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> git fetch origin foo:master</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> git fetch origin C3:foo</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> git checkout foo</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> git merge master</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>背景:利用Git fetch/Git push增加本地或删除远程分支。</li>
+</ul>
+<p><img src="/images/git_8.png" alt="pic"><img src="/images/git_9.png" alt="pic"></p>
+<ul>
+<li>解决方法</li>
+</ul>
+<ol>
+<li>删除远程分支foo，利用<strong>git push origin :&lt;要删除的分支名&gt;</strong></li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> git push origin :foo</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>增加本地分支，利用<strong>git fetch origin :&lt;要增加的分支名&gt;</strong></li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> git fetch origin :bar</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Git-pull"><a href="#Git-pull" class="headerlink" title="Git pull"></a>Git pull</h3><ul>
+<li>背景: <strong>git pull origin</strong> 相当于<strong>git fetch origin foo; git merge o/foo</strong>，另外可以指定**git pull origin &lt;source&gt;:&lt;destination&gt;**，这里source 和destination的参数意义和fetch一致</li>
+</ul>
+<p><img src="/images/git_10.png" alt="pic"><img src="/images/git_11.png" alt="pic"></p>
+<ul>
+<li>解题方法:</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> git pull origin bar:foo</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> git pull origin master:side</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>git</category>
+      </categories>
+      <tags>
+        <tag>Git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hexo使用方法</title>
+    <url>/2021/05/24/hexo-guideline/</url>
+    <content><![CDATA[<p>记录hexo的一些简单用法。</p>
+<span id="more"></span>
+
+<h2 id="hexo插入图片"><a href="#hexo插入图片" class="headerlink" title="hexo插入图片"></a>hexo插入图片</h2><p>在source目录下新建一个images目录，图片以/images/*.jpg来引用。<br><img src="/images/avatar.gif" alt="pic"></p>
+<h2 id="文章summary设置"><a href="#文章summary设置" class="headerlink" title="文章summary设置"></a>文章summary设置</h2><p>来利用</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">&lt;!-- more --&gt;</span><br></pre></td></tr></table></figure>
+<p>指令来只显示一部分文章的内容。</p>
+]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>multi-processsing-01</title>
+    <url>/2021/05/29/multi-processsing-01/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>多线程编程</category>
+      </categories>
+  </entry>
+</search>
