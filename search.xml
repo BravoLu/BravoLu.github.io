@@ -291,4 +291,57 @@
         <category>多线程编程</category>
       </categories>
   </entry>
+  <entry>
+    <title>动画风格摄像头应用</title>
+    <url>/2021/06/01/cartoonizer/</url>
+    <content><![CDATA[<p>去年在优图实习的时候听说腾讯的移动深度学习框架ncnn是由优图的nihui主导开发的，就一直有尝试使用ncnn做一个应用玩一玩。最近比较有空，终于弄完了一个一个简陋“动画风格摄像头”应用。最终使用的是在ncnn基础上设计的TNN。由于我没怎么做过android开发，并且TNN的使用文档一点也不完善，所以整个开发流程还是比较艰难的。</p>
+<span id="more"></span>
+
+<h2 id="算法部分"><a href="#算法部分" class="headerlink" title="算法部分"></a>算法部分</h2><ul>
+<li>虽然我读过不少GAN的论文，但是从来没有用过GAN在image style transfer。在我训练GAN的过程中，GAN生成的图片质量往往都是比较差的，尤其在换了数据的情况下。但是之前读了一篇利用GAN做图片特效的文章，被它的图片“动漫化”效果所震撼，所以我之前实现了这个算法并以此制作了一个<a href="https://www.bilibili.com/video/BV1ZT4y1T7qP/">马老师进军二刺螈</a>。</li>
+<li><img src="/images/cartoonizer1.png" alt="pic"></li>
+<li>算法细节可以阅读原文，并参考作者的开源代码<a href="https://github.com/SystemErrorWang/White-box-Cartoonization">White-box-Cartoonization</a>。</li>
+</ul>
+<h2 id="应用部分"><a href="#应用部分" class="headerlink" title="应用部分"></a>应用部分</h2><ul>
+<li><p>TNN:<a href="https://github.com/Tencent/TNN">https://github.com/Tencent/TNN</a></p>
+</li>
+<li><p>首先需要将pytorch模型先转换为onnx格式，再通过TNN提供的onnx2tnn工具将onnx转换为TNN框架所用的格式。由于模型需要经过两次转换，所以转换前后的模型结果对齐是比较关键的。pytorch转onnx格式的结果对齐可以通过python脚本来测试，但是我始终无法解决如何对齐onnx转tnn的结果。最后仔细阅读TNN的相关文档才发现，TNN提供来了onnx转tnn的对齐工具（太坑了）。</p>
+</li>
+<li><p>有了TNN模型后，就需要实现相应的android接口。由于TNN是用C++实现的，android是用java来写的，但我并不太会java，更不会android。所幸看懂java代码还是比较简单的，并且TNN本省提供了一些android端的demo代码提供参考。</p>
+</li>
+<li><p>TNN提供的android demo是通过JNI来用java调用c++代码的，整个流程主要就包括三步：</p>
+<ol>
+<li>实现C++相关接口，主要包括ProcessSDKInputMat（图片预处理），模型计算，ProcessSDKOutput（图片后处理）等。</li>
+<li>实现相关的JNI接口。</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> ANDROID_IMAGE_CARTOONIZER_JNI_H</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ANDROID_IMAGE_CARTOONIZER_JNI_H</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;jni.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TNN_CARTOONIZE(sig) Java_com_tencent_tnn_demo_ImageCartoonization_##sig</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> __cplusplus</span></span><br><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> &#123;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"><span class="function">JNIEXPORT JNICALL jint <span class="title">TNN_CARTOONIZE</span><span class="params">(init)</span><span class="params">(JNIEnv *env, jobject thiz, jstring modelPath, jint width, jint height, jint computeUnitType)</span></span>;</span><br><span class="line"><span class="function">JNIEXPORT JNICALL jint <span class="title">TNN_CARTOONIZE</span><span class="params">(deinit)</span><span class="params">(JNIEnv *env, jobject thiz)</span></span>;</span><br><span class="line"><span class="function">JNIEXPORT JNICALL jboolean <span class="title">TNN_CARTOONIZE</span><span class="params">(checkNpu)</span><span class="params">(JNIEnv *env, jobject thiz, jstring modelPath)</span></span>;</span><br><span class="line"><span class="function">JNIEXPORT JNICALL jobjectArray <span class="title">TNN_CARTOONIZE</span><span class="params">(cartoonizeFromImage)</span><span class="params">(JNIEnv *env, jobject thiz, jobject imageSource, jint width, jint height)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> __cplusplus</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">// ANDROID_IMAGE_CARTOONIZER_JNI_H</span></span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>android相关的activity和fragment。（参考TNN官方的demo）。</li>
+</ol>
+</li>
+<li><p>整个开发过程与到的问题除了android端编码相关的问题外，最大的坑就是android ARGB格式和模型的NCHW数据排布的问题，以及前面提到的模型对齐的问题。</p>
+</li>
+</ul>
+<h2 id="结果展示"><a href="#结果展示" class="headerlink" title="结果展示"></a>结果展示</h2><ul>
+<li>单张图片的结果</li>
+</ul>
+<p><img src="/images/cartoonizer3.jpg" alt="pic"></p>
+<p><img src="/images/cartoonizer2.jpg" alt="pic"></p>
+<ul>
+<li>摄像头采集的结果</li>
+</ul>
+<p><img src="/images/cartoonizer4.jpg" alt="pic"></p>
+<p>明显摄像头输入的结果和单图的结果还是有差距的，可能是图片输入尺寸固定的问题，导致最终的结果像素丢失严重。另外在摄像头模式下，在开启GPU模式后fps只有10（测试机为小米8青春版），速度不及预期。</p>
+<ul>
+<li>后续代码会开源：<a href="https://github.com/BravoLu/cartoonizer-android-demo">https://github.com/BravoLu/cartoonizer-android-demo</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>应用</category>
+      </categories>
+      <tags>
+        <tag>android</tag>
+      </tags>
+  </entry>
 </search>
