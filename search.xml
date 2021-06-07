@@ -373,4 +373,31 @@
         <tag>乐高</tag>
       </tags>
   </entry>
+  <entry>
+    <title>Effective C++ Part I</title>
+    <url>/2021/06/07/Effective-C/</url>
+    <content><![CDATA[<p>最近开始看Effective C++，并且做一些相关的记录</p>
+<span id="more"></span>
+
+<h1 id="条款01：视C-为一个语言联邦"><a href="#条款01：视C-为一个语言联邦" class="headerlink" title="条款01：视C++为一个语言联邦"></a>条款01：视C++为一个语言联邦</h1><h1 id="条款02：尽量以const，enum，inline替换-define"><a href="#条款02：尽量以const，enum，inline替换-define" class="headerlink" title="条款02：尽量以const，enum，inline替换#define"></a>条款02：尽量以const，enum，inline替换#define</h1><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ASPECT_RATIO 1.653</span></span><br><span class="line"><span class="comment">//替换为</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">double</span> AspectRation = <span class="number">1.653</span>;</span><br></pre></td></tr></table></figure>
+<p>因为#define定义的记号不会进入记号表，所以当出现编译错误时，可能提到1.653而不是ASPECT_RATIO；这种情况如果发生在头文件不是自己编写的时候，就会造成麻烦。</p>
+<h1 id="条款03：尽可能使用const"><a href="#条款03：尽可能使用const" class="headerlink" title="条款03：尽可能使用const"></a>条款03：尽可能使用const</h1><ul>
+<li><p>如果关键字const出现在星号左边，表示被指物是常量；如果出现在星号右边，表示指针自身是变量；</p>
+</li>
+<li><p>一个典型的例子</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Rational</span> &#123;</span>...&#125;;</span><br><span class="line"><span class="keyword">const</span> Rational <span class="keyword">operator</span>* (<span class="keyword">const</span> Rational &amp; lhs, <span class="keyword">const</span> Rational&amp; rhs);</span><br><span class="line"><span class="comment">//可以避免if (a*b = c) ... 的错误</span></span><br></pre></td></tr></table></figure></li>
+<li><p>mutable用法</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">mutable</span> std::<span class="keyword">size_t</span> textLength; <span class="comment">//这些成员变量可能会在const成员函数中被改变。</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="条款04：确定对象被使用前已先被初始化"><a href="#条款04：确定对象被使用前已先被初始化" class="headerlink" title="条款04：确定对象被使用前已先被初始化"></a>条款04：确定对象被使用前已先被初始化</h1><ul>
+<li>注意赋值和初始化的区别<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">//赋值操作</span></span><br><span class="line">ABEntry::<span class="built_in">ABEntry</span>(<span class="keyword">const</span> std::string&amp; name, <span class="keyword">const</span> std::string&amp; address, </span><br><span class="line">                    <span class="keyword">const</span> std::list&lt;PhoneNumber&gt;&amp; phones)</span><br><span class="line">&#123;</span><br><span class="line">    theName = name;</span><br><span class="line">    theAddress = address;</span><br><span class="line">    thePhones = phones;</span><br><span class="line">    numTimesConsulted = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//初始化操作</span></span><br><span class="line">ABEntry::<span class="built_in">ABEntry</span>(<span class="keyword">const</span> std::string&amp; name, <span class="keyword">const</span> std::string&amp; address, </span><br><span class="line">                    <span class="keyword">const</span> std::list&lt;PhoneNumber&gt;&amp; phones)</span><br><span class="line">                :<span class="built_in">theName</span>(name),</span><br><span class="line">                <span class="built_in">theAddress</span>(address),</span><br><span class="line">                <span class="built_in">thePhone</span>(phones),</span><br><span class="line">                <span class="built_in">numTimesConsulted</span>(<span class="number">0</span>)</span><br></pre></td></tr></table></figure></li>
+</ul>
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+      </tags>
+  </entry>
 </search>
