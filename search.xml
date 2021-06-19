@@ -406,7 +406,7 @@
     <content><![CDATA[<p>之前在做毕业设计的时候将自己去年的一个工作部署到了Web端，个人觉得这是一个不错的展示自己算法的一个项目。 趁着今天在毕业前清除实验室电脑内容，顺便把相关代码整理了一下。算法部署在我的个人云服务器上<a href="http://124.156.185.206:9988/">http://124.156.185.206:9988/</a>, 源码地址为：<a href="https://github.com/BravoLu/adversarial-attack-demo">https://github.com/BravoLu/adversarial-attack-demo</a></p>
 <span id="more"></span>
 
-<h2 id="算法部分"><a href="#算法部分" class="headerlink" title="算法部分"></a>算法部分</h2><p>这是一个我还算比较满意的工作，之前没有花太多时间在写作上，所以之前的两次投稿都被拒了。由于相关算法目前还在投稿中，就只简单介绍一下什么是“对抗攻击”。</p>
+<h2 id="算法相关"><a href="#算法相关" class="headerlink" title="算法相关"></a>算法相关</h2><p>这是一个我还算比较满意的工作，之前没有花太多时间在写作上，所以之前的两次投稿都被拒了。由于相关算法目前还在投稿中，就只简单介绍一下什么是“对抗攻击”。</p>
 <ul>
 <li>对抗攻击(adversarial attack)</li>
 </ul>
@@ -440,7 +440,7 @@
 <ol start="3">
 <li><p>利用javascripts，CSS，html实现的UI界面。<br>本科的时候学过点皮毛，所以实际写起来没有遇到太多问题，不过最终输出页面并不能很好的适配浏览器的各种比例。 按着模板简单修改成我需要的UI。主要包含以下三个功能：</p>
 <ol>
-<li>可以选择目标模型。</li>
+<li>可以选择目标模型，根据我的论文，主要包括5个分类模型：resnet，efficientnet，densenet，googLenet, mobilenet。</li>
 <li>可以上传图片作为原始样本。</li>
 <li>显示攻击前后的图片以及对应的输出概率分布。</li>
 </ol>
