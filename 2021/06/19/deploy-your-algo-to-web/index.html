@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-16x16.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;example.com&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;搜索...&quot;,&quot;empty&quot;:&quot;没有找到任何搜索结果：${query}&quot;,&quot;hits_time&quot;:&quot;找到 ${hits} 个搜索结果（用时 ${time} 毫秒）&quot;,&quot;hits&quot;:&quot;找到 ${hits} 个搜索结果&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:1,&quot;unescape&quot;:false,&quot;preload&quot;:false}}</script>
+<meta name="description" content="之前在做毕业设计的时候将自己去年的一个工作部署到了Web端，个人觉得这是一个不错的展示自己算法的一个项目。 趁着今天在毕业前清除实验室电脑内容，顺便把相关代码整理了一下。算法部署在我的个人云服务器上http:&#x2F;&#x2F;124.156.185.206:9988&#x2F;, 源码地址为：https:&#x2F;&#x2F;github.com&#x2F;BravoLu&#x2F;adversarial-attack-demo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="部署对抗攻击算法到Web端">
+<meta property="og:url" content="http://example.com/2021/06/19/deploy-your-algo-to-web/index.html">
+<meta property="og:site_name" content="每天一杯冰美式">
+<meta property="og:description" content="之前在做毕业设计的时候将自己去年的一个工作部署到了Web端，个人觉得这是一个不错的展示自己算法的一个项目。 趁着今天在毕业前清除实验室电脑内容，顺便把相关代码整理了一下。算法部署在我的个人云服务器上http:&#x2F;&#x2F;124.156.185.206:9988&#x2F;, 源码地址为：https:&#x2F;&#x2F;github.com&#x2F;BravoLu&#x2F;adversarial-attack-demo">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/adv1.jpg">
+<meta property="og:image" content="http://example.com/images/adv_ui1.jpg">
+<meta property="og:image" content="http://example.com/images/adv_ui2.jpg">
+<meta property="article:published_time" content="2021-06-19T07:58:49.000Z">
+<meta property="article:modified_time" content="2021-06-19T08:46:53.000Z">
+<meta property="article:author" content="Bravolu">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/adv1.jpg">
+
+
+<link rel="canonical" href="http://example.com/2021/06/19/deploy-your-algo-to-web/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;zh-CN&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;example.com&#x2F;2021&#x2F;06&#x2F;19&#x2F;deploy-your-algo-to-web&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;06&#x2F;19&#x2F;deploy-your-algo-to-web&#x2F;&quot;,&quot;title&quot;:&quot;部署对抗攻击算法到Web端&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>部署对抗攻击算法到Web端 | 每天一杯冰美式</title><script src="/js/config.js"></script>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">每天一杯冰美式</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-schedule"><a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>日程表</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E9%83%A8%E5%88%86"><span class="nav-number">1.</span> <span class="nav-text">算法部分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%83%A8%E7%BD%B2%E7%9B%B8%E5%85%B3"><span class="nav-number">2.</span> <span class="nav-text">部署相关</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Bravolu"
+      src="/uploads/avatar.gif">
+  <p class="site-author-name" itemprop="name">Bravolu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/BravoLu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;BravoLu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/lushh7@mail2.sysu.edu.cn" title="E-Mail → lushh7@mail2.sysu.edu.cn"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+      <div class="wechat_OA">
+          <span>欢迎关注我的公众号</span>
+          <br>
+          <!-- 这里添加你的二维码图片 -->
+          <img src ="/images/qrcode.jpg">
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/19/deploy-your-algo-to-web/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.gif">
+      <meta itemprop="name" content="Bravolu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="每天一杯冰美式">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          部署对抗攻击算法到Web端
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2021-06-19 15:58:49 / 修改时间：16:46:53" itemprop="dateCreated datePublished" datetime="2021-06-19T15:58:49+08:00">2021-06-19</time>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>之前在做毕业设计的时候将自己去年的一个工作部署到了Web端，个人觉得这是一个不错的展示自己算法的一个项目。 趁着今天在毕业前清除实验室电脑内容，顺便把相关代码整理了一下。算法部署在我的个人云服务器上<a target="_blank" rel="noopener" href="http://124.156.185.206:9988/">http://124.156.185.206:9988/</a>, 源码地址为：<a target="_blank" rel="noopener" href="https://github.com/BravoLu/adversarial-attack-demo">https://github.com/BravoLu/adversarial-attack-demo</a></p>
+<span id="more"></span>
+
+<h2 id="算法部分"><a href="#算法部分" class="headerlink" title="算法部分"></a>算法部分</h2><p>这是一个我还算比较满意的工作，之前没有花太多时间在写作上，所以之前的两次投稿都被拒了。由于相关算法目前还在投稿中，就只简单介绍一下什么是“对抗攻击”。</p>
+<ul>
+<li>对抗攻击(adversarial attack)</li>
+</ul>
+<p>首先对抗攻击可以理解为一种图片处理手段，其目的是在原始图片中添加噪声，这些噪声一般容易被人眼察觉。添加噪声后的图片被称为对抗样本（adversarial examples) 使得现有的识别模型无法正确识别。 如下图所示，原始样本（original examples）被以74%的概率分类为“tench”，在经过我的算法处理后，被以100%分类为“church”。</p>
+<p><img src="/images/adv1.jpg" alt="pic"></p>
+<h2 id="部署相关"><a href="#部署相关" class="headerlink" title="部署相关"></a>部署相关</h2><ul>
+<li>技术栈</li>
+</ul>
+<ol>
+<li>Flask</li>
+<li>pytorch，python</li>
+<li>javascript, html, css </li>
+</ol>
+<ul>
+<li>实现思路</li>
+</ul>
+<ol>
+<li><p>首先简单将利用python&amp;pytorch实现单图图片预处理，前向运算和输出结果处理，最终输出的包括：1）处理后的图片2）处理前的图片输出概率分布3）处理后图片的输出概率分布。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">attack</span>(<span class="params">img_name, load_folder, model_path</span>):</span></span><br><span class="line">    weight = torch.load(model_path, map_location=torch.device(<span class="string">&#x27;cpu&#x27;</span>))</span><br><span class="line">    model = SSAE()</span><br><span class="line">    model.load_state_dict(weight)</span><br><span class="line">    model.<span class="built_in">eval</span>()</span><br><span class="line"></span><br><span class="line">    load_path = os.path.join(load_folder, img_name)</span><br><span class="line">    image = cv2.imread(load_path)</span><br><span class="line">    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)</span><br><span class="line">    image = cv2.resize(image, (<span class="number">224</span>, <span class="number">224</span>))</span><br><span class="line">    image = image.transpose(<span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>)</span><br><span class="line">    image = torch.tensor(image).unsqueeze(<span class="number">0</span>)</span><br><span class="line">    image = image / <span class="number">255.0</span></span><br><span class="line">    image = normalize(image)</span><br><span class="line">    perturbation, saliency_map = model(image)</span><br><span class="line">    adv_image = image + batch_clamp(<span class="number">0.1</span>, perturbation)</span><br><span class="line"></span><br><span class="line">    tensor2img(adv_image)</span><br><span class="line">    save_image(adv_image, <span class="string">&#x27;%s/%s_adv.png&#x27;</span>%(UPLOAD_FOLDER, img_name))</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;%s_adv.png&quot;</span>%img_name</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">classifier</span>(<span class="params">img_name, load_folder, model_path, model_name</span>):</span></span><br><span class="line">    weight = torch.load(model_path, map_location=torch.device(<span class="string">&#x27;cpu&#x27;</span>), encoding=<span class="string">&quot;latin1&quot;</span>)</span><br><span class="line">    model = <span class="built_in">globals</span>()[model_name]()</span><br><span class="line">    model.load_state_dict(weight)</span><br><span class="line">    model.<span class="built_in">eval</span>()</span><br><span class="line"></span><br><span class="line">    load_path = os.path.join(load_folder, img_name)</span><br><span class="line"></span><br><span class="line">    image = cv2.imread(load_path)</span><br><span class="line">    image = cv2.resize(image, (<span class="number">224</span>, <span class="number">224</span>))</span><br><span class="line">    image = image.transpose(<span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>)</span><br><span class="line">    image = torch.tensor(image).unsqueeze(<span class="number">0</span>)</span><br><span class="line">    image = image / <span class="number">255.0</span></span><br><span class="line">    image = normalize(image)</span><br><span class="line">    output = model(image.<span class="built_in">float</span>())</span><br><span class="line">    possibility = F.softmax(output, <span class="number">1</span>)</span><br><span class="line">    _, label = output.<span class="built_in">max</span>(<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">return</span> possibility.detach().numpy().tolist(), label</span><br></pre></td></tr></table></figure></li>
+<li><p>利用Flask框架进行前后端交互。<br>Flask是一个轻量化的Web框架，使用起来十分简单，基本上一看代码就知道如何使用，十分适合用来展示算法效果。 </p>
+<ol>
+<li><p>现在html中定义表单，并以action字段作为标识, 如：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">method</span>=<span class="string">&quot;POST&quot;</span> <span class="attr">action</span>=<span class="string">&quot;/upload&quot;</span> <span class="attr">enctype</span>=<span class="string">&quot;multipart/form-data&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>利用app.route定义相关action的代码逻辑，并利用request传参。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&quot;&#123;方法名&#125;&quot;</span>， method=[<span class="string">&quot;GET&quot;</span>, <span class="string">&quot;POST&quot;</span>]</span>)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">xxx</span>():</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure></li>
+<li><p>利用render_template渲染网页，可以传入任意key-value作为参数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">render_template(<span class="string">&quot;xxx.html&quot;</span>, **kwargs)</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+</ol>
+<ol start="3">
+<li><p>利用javascripts，CSS，html实现的UI界面。<br>本科的时候学过点皮毛，所以实际写起来没有遇到太多问题，不过最终输出页面并不能很好的适配浏览器的各种比例。 按着模板简单修改成我需要的UI。主要包含以下三个功能：</p>
+<ol>
+<li>可以选择目标模型。</li>
+<li>可以上传图片作为原始样本。</li>
+<li>显示攻击前后的图片以及对应的输出概率分布。</li>
+</ol>
+<p> 最终结果如下图所示。<br> <img src="/images/adv_ui1.jpg" alt="pic"><br> <img src="/images/adv_ui2.jpg" alt="pic"></p>
+</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/06/07/Effective-C/" rel="prev" title="Effective C++ Part I">
+                  <i class="fa fa-chevron-left"></i> Effective C++ Part I
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+<script src="/js/comments.js"></script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Bravolu</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">10k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">9 分钟</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
